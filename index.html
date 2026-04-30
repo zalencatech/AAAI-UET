@@ -1,0 +1,3025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AAAI-UET Body | AI Society — University of Engineering & Technology Lahore</title>
+<meta name="description" content="AAAI Student Chapter at UET Lahore. Building the next generation of AI engineers." />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+/* ============================================================
+   CSS VARIABLES & RESET
+   ============================================================ */
+:root {
+  --bg: #030712;
+  --bg2: #0a0f1e;
+  --bg3: #0d1424;
+  --surface: rgba(255,255,255,0.04);
+  --surface2: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(99,179,255,0.2);
+  --text: #e2e8f0;
+  --text2: #94a3b8;
+  --text3: #64748b;
+  --accent: #3b82f6;
+  --accent2: #60a5fa;
+  --accent3: #93c5fd;
+  --neon: #00d4ff;
+  --neon2: #7c3aed;
+  --green: #10b981;
+  --red: #ef4444;
+  --gold: #f59e0b;
+  --radius: 12px;
+  --radius2: 20px;
+  --font-head: 'Syne', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --font-body: 'Inter', sans-serif;
+  --glow: 0 0 40px rgba(59,130,246,0.15);
+  --glow2: 0 0 80px rgba(0,212,255,0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; overflow-x: hidden; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Animated background grid */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.flex { display: flex; }
+.grid { display: grid; }
+.hidden { display: none !important; }
+.relative { position: relative; }
+
+.tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--neon);
+  border: 1px solid rgba(0,212,255,0.3);
+  background: rgba(0,212,255,0.05);
+  padding: 5px 12px; border-radius: 100px;
+}
+
+.tag::before { content: '//'; opacity: 0.5; }
+
+.section-title {
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.section-subtitle {
+  color: var(--text2);
+  font-size: 1.05rem;
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #60a5fa 0%, #00d4ff 50%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 28px;
+  font-family: var(--font-head);
+  font-size: 0.9rem; font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: 8px;
+  border: none; cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--neon2));
+  color: white;
+  box-shadow: 0 0 30px rgba(59,130,246,0.3);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(59,130,246,0.5);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border2);
+}
+.btn-outline:hover {
+  background: var(--surface2);
+  border-color: var(--accent2);
+  color: var(--accent2);
+}
+
+.btn-ghost {
+  background: var(--surface);
+  color: var(--text2);
+  border: 1px solid var(--border);
+  padding: 9px 18px;
+  font-size: 0.82rem;
+}
+.btn-ghost:hover { background: var(--surface2); color: var(--text); }
+
+.btn-danger {
+  background: rgba(239,68,68,0.1);
+  color: var(--red);
+  border: 1px solid rgba(239,68,68,0.3);
+  padding: 7px 14px;
+  font-size: 0.8rem;
+}
+.btn-danger:hover { background: rgba(239,68,68,0.2); }
+
+.btn-success {
+  background: linear-gradient(135deg, var(--green), #059669);
+  color: white;
+}
+.btn-success:hover { transform: translateY(-1px); box-shadow: 0 0 20px rgba(16,185,129,0.3); }
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+#navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+#navbar.scrolled {
+  background: rgba(3,7,18,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--glow);
+}
+
+.nav-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 70px;
+}
+
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+  font-family: var(--font-head);
+  font-weight: 800; font-size: 1.1rem;
+  color: var(--text);
+}
+
+.nav-logo .logo-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--accent), var(--neon));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 700; color: white;
+}
+
+.nav-links {
+  display: flex; align-items: center; gap: 4px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-head);
+  font-size: 0.85rem; font-weight: 600;
+  color: var(--text2);
+  text-decoration: none;
+  padding: 8px 14px; border-radius: 8px;
+  transition: all 0.2s;
+  letter-spacing: 0.01em;
+}
+
+.nav-links a:hover { color: var(--text); background: var(--surface); }
+.nav-links a.active { color: var(--accent2); background: rgba(59,130,246,0.1); }
+
+.nav-admin-btn {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 7px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text3);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.nav-admin-btn:hover { border-color: var(--accent); color: var(--accent2); }
+
+.hamburger {
+  display: none;
+  flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 4px;
+}
+.hamburger span {
+  width: 24px; height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed; top: 70px; left: 0; right: 0;
+  background: rgba(3,7,18,0.97);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px 24px;
+  z-index: 999;
+  flex-direction: column; gap: 4px;
+}
+
+.mobile-menu a {
+  font-family: var(--font-head);
+  font-size: 0.95rem; font-weight: 600;
+  color: var(--text2);
+  text-decoration: none;
+  padding: 12px 16px; border-radius: 8px;
+  transition: all 0.2s;
+}
+.mobile-menu a:hover { color: var(--text); background: var(--surface); }
+
+/* ============================================================
+   PAGES
+   ============================================================ */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ============================================================
+   HOME PAGE — HERO
+   ============================================================ */
+#hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  position: relative;
+  padding: 120px 0 80px;
+  overflow: hidden;
+}
+
+/* Animated orbs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  animation: float 8s ease-in-out infinite;
+  pointer-events: none;
+}
+.orb-1 { width: 500px; height: 500px; background: var(--accent); top: -100px; right: -100px; animation-delay: 0s; }
+.orb-2 { width: 350px; height: 350px; background: var(--neon2); bottom: -50px; left: -50px; animation-delay: 3s; }
+.orb-3 { width: 200px; height: 200px; background: var(--neon); top: 40%; left: 30%; animation-delay: 1.5s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+}
+
+.hero-content {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+}
+
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 28px;
+}
+
+.hero-eyebrow .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 12px var(--green);
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.8); }
+}
+
+.hero-eyebrow span {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-h1 {
+  font-family: var(--font-head);
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin-bottom: 32px;
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--text2);
+  max-width: 580px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+.hero-cta {
+  display: flex; align-items: center; gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hero-stats {
+  display: flex; gap: 40px;
+  margin-top: 64px;
+  padding-top: 48px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.stat-item { display: flex; flex-direction: column; gap: 4px; }
+
+.stat-num {
+  font-family: var(--font-head);
+  font-size: 2.2rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--accent2), var(--neon));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+
+/* Ticker */
+.ticker-wrapper {
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+  background: var(--bg2);
+  position: relative;
+}
+
+.ticker-wrapper::before, .ticker-wrapper::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0; width: 100px; z-index: 2;
+  pointer-events: none;
+}
+.ticker-wrapper::before { left: 0; background: linear-gradient(to right, var(--bg2), transparent); }
+.ticker-wrapper::after { right: 0; background: linear-gradient(to left, var(--bg2), transparent); }
+
+.ticker-track {
+  display: flex; gap: 0;
+  animation: ticker 30s linear infinite;
+  width: max-content;
+}
+.ticker-item {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem; color: var(--text3);
+  padding: 0 32px; white-space: nowrap;
+}
+.ticker-item .sep { color: var(--accent); font-size: 1rem; }
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ============================================================
+   ABOUT SECTION
+   ============================================================ */
+.section {
+  padding: 100px 0;
+  position: relative;
+}
+
+.section-header {
+  margin-bottom: 60px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.about-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  padding: 40px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.about-card:hover { border-color: var(--border2); transform: translateY(-4px); box-shadow: var(--glow); }
+.about-card:hover::before { opacity: 1; }
+
+.about-card .card-icon {
+  width: 52px; height: 52px;
+  background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(0,212,255,0.1));
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.about-card h3 {
+  font-family: var(--font-head);
+  font-size: 1.3rem; font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.about-card p { color: var(--text2); font-size: 0.95rem; line-height: 1.7; }
+
+/* ============================================================
+   WHAT WE DO
+   ============================================================ */
+.wedo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.wedo-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  transition: all 0.3s;
+  position: relative; overflow: hidden;
+}
+
+.wedo-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(59,130,246,0.05), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+
+.wedo-card:hover { border-color: var(--border2); transform: translateY(-4px); }
+.wedo-card:hover::after { opacity: 1; }
+
+.wedo-card .ico {
+  font-size: 2rem; margin-bottom: 16px; display: block;
+}
+
+.wedo-card h4 {
+  font-family: var(--font-head);
+  font-size: 1.05rem; font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.wedo-card p { font-size: 0.87rem; color: var(--text2); line-height: 1.6; }
+
+/* ============================================================
+   VISION MISSION
+   ============================================================ */
+.vm-wrapper {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+}
+
+.vm-card {
+  border-radius: var(--radius2); padding: 48px 40px;
+  position: relative; overflow: hidden;
+}
+
+.vm-card.vision {
+  background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(0,212,255,0.04));
+  border: 1px solid rgba(59,130,246,0.15);
+}
+
+.vm-card.mission {
+  background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(59,130,246,0.04));
+  border: 1px solid rgba(124,58,237,0.15);
+}
+
+.vm-card .vm-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--accent2); margin-bottom: 16px; display: block;
+}
+
+.vm-card h3 {
+  font-family: var(--font-head);
+  font-size: 1.8rem; font-weight: 800;
+  margin-bottom: 16px; line-height: 1.1;
+}
+
+.vm-card p { color: var(--text2); line-height: 1.75; font-size: 0.97rem; }
+
+.vm-bg-text {
+  position: absolute; bottom: -20px; right: -10px;
+  font-family: var(--font-head);
+  font-size: 7rem; font-weight: 800;
+  opacity: 0.04; color: white;
+  user-select: none; pointer-events: none;
+  letter-spacing: -0.05em;
+}
+
+/* ============================================================
+   TEAM PAGE
+   ============================================================ */
+.team-section { margin-bottom: 64px; }
+
+.team-section-header {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.team-section-header h3 {
+  font-family: var(--font-head);
+  font-size: 1.3rem; font-weight: 700;
+}
+
+.team-section-header .count {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 3px 10px; border-radius: 100px;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.member-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  padding: 28px 24px;
+  text-align: center;
+  transition: all 0.3s;
+  position: relative; overflow: hidden;
+}
+
+.member-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 60px;
+  background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(124,58,237,0.08));
+}
+
+.member-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3), var(--glow);
+}
+
+.member-avatar {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  position: relative; z-index: 1;
+  border: 2px solid var(--border2);
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--accent), var(--neon2));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head);
+  font-size: 1.5rem; font-weight: 800; color: white;
+}
+
+.member-avatar img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+
+.member-name {
+  font-family: var(--font-head);
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.member-role {
+  font-family: var(--font-mono);
+  font-size: 0.72rem; color: var(--accent2);
+  letter-spacing: 0.05em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.member-desc { font-size: 0.83rem; color: var(--text2); line-height: 1.55; }
+
+/* ============================================================
+   EVENTS / HACKATHON PAGES
+   ============================================================ */
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+.event-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.event-card:hover { border-color: var(--border2); transform: translateY(-4px); box-shadow: var(--glow); }
+
+.event-card-header {
+  padding: 24px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(0,212,255,0.03));
+}
+
+.event-card-header .event-date {
+  font-family: var(--font-mono);
+  font-size: 0.72rem; color: var(--neon);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.event-card-header h3 {
+  font-family: var(--font-head);
+  font-size: 1.15rem; font-weight: 700;
+  line-height: 1.3;
+}
+
+.event-card-body { padding: 24px; }
+
+.event-meta {
+  display: flex; flex-direction: column; gap: 8px;
+  margin-bottom: 16px;
+}
+
+.event-meta-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.83rem; color: var(--text2);
+}
+
+.event-meta-item .icon { font-size: 0.9rem; width: 20px; text-align: center; }
+
+.event-desc {
+  font-size: 0.87rem; color: var(--text2);
+  line-height: 1.65;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.event-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.fee-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 4px 12px; border-radius: 100px;
+}
+
+.fee-free { background: rgba(16,185,129,0.1); color: var(--green); border: 1px solid rgba(16,185,129,0.2); }
+.fee-paid { background: rgba(245,158,11,0.1); color: var(--gold); border: 1px solid rgba(245,158,11,0.2); }
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 40px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+}
+
+.empty-state .empty-emoji {
+  font-size: 4rem; margin-bottom: 16px; display: block;
+  animation: sway 3s ease-in-out infinite;
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+.empty-state h3 {
+  font-family: var(--font-head);
+  font-size: 1.4rem; font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.empty-state p { color: var(--text2); font-size: 0.92rem; }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius2);
+  padding: 40px;
+  max-width: 600px; width: 100%;
+  max-height: 85vh; overflow-y: auto;
+  transform: scale(0.95);
+  transition: transform 0.3s;
+}
+
+.modal-overlay.open .modal { transform: scale(1); }
+
+.modal-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 16px;
+}
+
+.modal-close {
+  background: var(--surface2); border: none;
+  width: 32px; height: 32px; border-radius: 8px;
+  color: var(--text2); cursor: pointer; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.modal-close:hover { background: rgba(239,68,68,0.15); color: var(--red); }
+
+.modal-detail-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+.modal-detail-row:last-of-type { border-bottom: none; }
+.modal-detail-row .label { color: var(--text3); width: 120px; flex-shrink: 0; font-size: 0.82rem; }
+.modal-detail-row .value { color: var(--text); }
+
+/* ============================================================
+   FORMS PAGE
+   ============================================================ */
+.forms-tabs {
+  display: flex; gap: 8px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.form-tab {
+  font-family: var(--font-head);
+  font-size: 0.88rem; font-weight: 700;
+  padding: 10px 20px; border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text2);
+  cursor: pointer; transition: all 0.2s;
+}
+
+.form-tab.active {
+  background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(0,212,255,0.1));
+  border-color: var(--accent);
+  color: var(--accent2);
+}
+
+.form-panel { display: none; }
+.form-panel.active { display: block; }
+
+.form-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  padding: 40px;
+  max-width: 680px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-family: var(--font-head);
+  font-size: 0.82rem; font-weight: 700;
+  color: var(--text2);
+  letter-spacing: 0.04em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: var(--text3); }
+
+.form-group select { cursor: pointer; }
+.form-group select option { background: var(--bg2); }
+
+.form-group textarea { min-height: 120px; resize: vertical; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.form-success {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 48px 32px; text-align: center; gap: 12px;
+}
+
+.form-success .check {
+  width: 64px; height: 64px;
+  background: rgba(16,185,129,0.1);
+  border: 2px solid var(--green);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+
+.form-success h3 {
+  font-family: var(--font-head);
+  font-size: 1.4rem; font-weight: 700;
+}
+
+.form-success p { color: var(--text2); }
+
+/* ============================================================
+   ADMIN PANEL
+   ============================================================ */
+#admin-login {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+}
+
+.login-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  padding: 48px 40px;
+  width: 100%; max-width: 420px;
+  text-align: center;
+}
+
+.login-card .lock-icon {
+  width: 60px; height: 60px;
+  background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(0,212,255,0.1));
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+  margin: 0 auto 20px;
+}
+
+.login-card h2 {
+  font-family: var(--font-head);
+  font-size: 1.5rem; font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.login-card p { color: var(--text3); font-size: 0.87rem; margin-bottom: 32px; }
+
+.login-error {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: var(--red);
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
+
+/* Admin Dashboard */
+#admin-panel {
+  min-height: 100vh;
+  display: flex;
+}
+
+.admin-sidebar {
+  width: 240px; flex-shrink: 0;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  padding: 24px 16px;
+  position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
+  overflow-y: auto;
+  display: flex; flex-direction: column; gap: 4px;
+}
+
+.admin-sidebar .sidebar-brand {
+  font-family: var(--font-head);
+  font-size: 0.95rem; font-weight: 800;
+  padding: 8px 12px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+  color: var(--accent2);
+}
+
+.admin-sidebar .sidebar-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem; color: var(--text3);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 8px 12px 4px;
+  margin-top: 8px;
+}
+
+.admin-nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 8px;
+  font-family: var(--font-head);
+  font-size: 0.85rem; font-weight: 600;
+  color: var(--text2);
+  cursor: pointer; transition: all 0.2s;
+  border: none; background: transparent; width: 100%; text-align: left;
+}
+
+.admin-nav-item .nav-icon { font-size: 1rem; width: 20px; text-align: center; }
+.admin-nav-item:hover { background: var(--surface); color: var(--text); }
+.admin-nav-item.active { background: rgba(59,130,246,0.1); color: var(--accent2); border: 1px solid rgba(59,130,246,0.15); }
+
+.admin-logout {
+  margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border);
+}
+
+.admin-main {
+  margin-left: 240px;
+  flex: 1;
+  padding: 32px;
+  min-height: 100vh;
+}
+
+.admin-header {
+  margin-bottom: 32px;
+}
+
+.admin-header h1 {
+  font-family: var(--font-head);
+  font-size: 1.8rem; font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.admin-header p { color: var(--text3); font-size: 0.87rem; }
+
+.admin-section { display: none; }
+.admin-section.active { display: block; }
+
+/* Stats */
+.admin-stats-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px; margin-bottom: 32px;
+}
+
+.admin-stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.admin-stat .stat-val {
+  font-family: var(--font-head);
+  font-size: 2rem; font-weight: 800;
+  color: var(--accent2);
+}
+
+.admin-stat .stat-lbl {
+  font-size: 0.8rem; color: var(--text3); margin-top: 4px;
+}
+
+/* Table */
+.admin-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+}
+
+.admin-toolbar h3 {
+  font-family: var(--font-head);
+  font-size: 1.1rem; font-weight: 700;
+}
+
+.admin-table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden; overflow-x: auto;
+}
+
+table {
+  width: 100%; border-collapse: collapse;
+}
+
+thead tr {
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  font-family: var(--font-mono);
+  font-size: 0.7rem; color: var(--text3);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 12px 16px; text-align: left;
+}
+
+td {
+  padding: 14px 16px;
+  font-size: 0.87rem; color: var(--text);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+tr:last-child td { border-bottom: none; }
+
+tbody tr:hover { background: var(--surface2); }
+
+.td-actions { display: flex; gap: 8px; }
+
+.badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 100px;
+}
+
+.badge-blue { background: rgba(59,130,246,0.1); color: var(--accent2); border: 1px solid rgba(59,130,246,0.2); }
+.badge-purple { background: rgba(124,58,237,0.1); color: #a78bfa; border: 1px solid rgba(124,58,237,0.2); }
+.badge-green { background: rgba(16,185,129,0.1); color: var(--green); border: 1px solid rgba(16,185,129,0.2); }
+
+/* Admin form modal */
+.admin-modal {
+  position: fixed; inset: 0; z-index: 3000;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.admin-modal.open { opacity: 1; pointer-events: all; }
+
+.admin-modal-inner {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius2);
+  padding: 36px;
+  width: 100%; max-width: 580px;
+  max-height: 90vh; overflow-y: auto;
+  transform: scale(0.95);
+  transition: transform 0.3s;
+}
+
+.admin-modal.open .admin-modal-inner { transform: scale(1); }
+
+.admin-modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.admin-modal-header h3 {
+  font-family: var(--font-head);
+  font-size: 1.2rem; font-weight: 700;
+}
+
+/* Submissions view */
+.sub-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 12px;
+}
+
+.sub-card-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 12px; gap: 12px;
+}
+
+.sub-card-header h4 {
+  font-family: var(--font-head);
+  font-size: 0.95rem; font-weight: 700;
+}
+
+.sub-card-meta {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  margin-bottom: 8px;
+}
+
+.sub-card-meta span {
+  font-size: 0.8rem; color: var(--text2);
+  font-family: var(--font-mono);
+}
+
+.sub-card p { font-size: 0.87rem; color: var(--text2); line-height: 1.6; }
+
+/* Loading */
+.loading-spinner {
+  display: flex; align-items: center; justify-content: center;
+  padding: 60px;
+  flex-direction: column; gap: 16px;
+}
+
+.spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-spinner p {
+  font-family: var(--font-mono);
+  font-size: 0.78rem; color: var(--text3);
+  letter-spacing: 0.08em;
+}
+
+/* Toast */
+.toast-container {
+  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  display: flex; flex-direction: column; gap: 8px;
+  max-width: 340px;
+}
+
+.toast {
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 0.87rem;
+  border: 1px solid;
+  backdrop-filter: blur(12px);
+  animation: slideIn 0.3s ease;
+}
+
+.toast.success { background: rgba(16,185,129,0.15); border-color: rgba(16,185,129,0.3); color: #6ee7b7; }
+.toast.error { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.3); color: #fca5a5; }
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 60px 0 32px;
+}
+
+.footer-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 40px;
+}
+
+.footer-brand p {
+  color: var(--text3); font-size: 0.87rem;
+  line-height: 1.7; margin-top: 12px;
+  max-width: 300px;
+}
+
+.footer-col h4 {
+  font-family: var(--font-head);
+  font-size: 0.85rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 16px;
+}
+
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+
+.footer-col ul a {
+  font-size: 0.88rem; color: var(--text2);
+  text-decoration: none; transition: color 0.2s;
+}
+.footer-col ul a:hover { color: var(--accent2); }
+
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+
+.footer-bottom p {
+  font-size: 0.82rem; color: var(--text3);
+  font-family: var(--font-mono);
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  
+  .about-grid,
+  .vm-wrapper,
+  .footer-grid { grid-template-columns: 1fr; gap: 20px; }
+  
+  .hero-h1 { font-size: clamp(2.4rem, 10vw, 3.5rem); }
+  
+  .hero-stats { gap: 24px; }
+  
+  .form-row { grid-template-columns: 1fr; }
+  
+  .admin-sidebar { display: none; }
+  .admin-main { margin-left: 0; padding: 20px 16px; }
+
+  .events-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+
+  .section { padding: 60px 0; }
+  .modal { padding: 24px; }
+}
+
+@media (max-width: 480px) {
+  .hero-cta { flex-direction: column; align-items: flex-start; }
+  .forms-tabs { overflow-x: auto; flex-wrap: nowrap; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+
+/* Config notice */
+.config-banner {
+  background: rgba(245,158,11,0.1);
+  border-bottom: 1px solid rgba(245,158,11,0.2);
+  padding: 10px 24px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+}
+</style>
+</head>
+<body>
+
+<!-- Config Banner -->
+<div id="config-banner" class="config-banner">
+  ⚙️ SETUP REQUIRED — Open this file and add your Supabase URL &amp; Anon Key (see comments at bottom of file)
+</div>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" onclick="showPage('home');return false;">
+      <div class="logo-icon">AI</div>
+      AAAI-UET
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;" id="nav-home">Home</a></li>
+      <li><a href="#" onclick="showPage('team');return false;" id="nav-team">Core Team</a></li>
+      <li><a href="#" onclick="showPage('events');return false;" id="nav-events">Seminars</a></li>
+      <li><a href="#" onclick="showPage('hackathons');return false;" id="nav-hackathons">Hackathons</a></li>
+      <li><a href="#" onclick="showPage('forms');return false;" id="nav-forms">Apply</a></li>
+    </ul>
+    <button class="nav-admin-btn" onclick="showAdminLogin()">Admin ⌥</button>
+    <div class="hamburger" onclick="toggleMobileMenu()" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#" onclick="showPage('home');closeMobileMenu();return false;">🏠 Home</a>
+  <a href="#" onclick="showPage('team');closeMobileMenu();return false;">👥 Core Team</a>
+  <a href="#" onclick="showPage('events');closeMobileMenu();return false;">📅 Seminars</a>
+  <a href="#" onclick="showPage('hackathons');closeMobileMenu();return false;">⚡ Hackathons</a>
+  <a href="#" onclick="showPage('forms');closeMobileMenu();return false;">📝 Apply</a>
+  <a href="#" onclick="showAdminLogin();closeMobileMenu();return false;">🔐 Admin</a>
+</div>
+
+<!-- Toast container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Event Detail Modal -->
+<div class="modal-overlay" id="eventModal" onclick="closeEventModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="tag" id="modal-type-tag">EVENT</div>
+        <h2 style="font-family:var(--font-head);font-size:1.5rem;font-weight:800;margin-top:10px;" id="modal-title"></h2>
+      </div>
+      <button class="modal-close" onclick="closeEventModal()">✕</button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     HOME PAGE
+     ============================================================ -->
+<div id="page-home" class="page active">
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span class="dot"></span>
+        <span>AAAI Student Chapter · UET Lahore · Est. 2024</span>
+      </div>
+      <h1 class="hero-h1">
+        <span class="gradient-text">Built Different.</span><br>
+        Built on <span style="color:var(--neon)">AI.</span>
+      </h1>
+      <p class="hero-sub">
+        Not your average student society. We're shaping the next generation of AI engineers — one hackathon, seminar, and breakthrough at a time.
+      </p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="showPage('forms')">
+          <span>🚀</span> Join the Body
+        </button>
+        <button class="btn btn-outline" onclick="showPage('events')">
+          View Events →
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num">50+</span>
+          <span class="stat-label">Active Members</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">10+</span>
+          <span class="stat-label">Events Run</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">3</span>
+          <span class="stat-label">Hackathons</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">∞</span>
+          <span class="stat-label">Ambition</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ticker -->
+  <div class="ticker-wrapper">
+    <div class="ticker-track" id="ticker">
+      <div class="ticker-item"><span class="sep">◆</span>Artificial Intelligence</div>
+      <div class="ticker-item"><span class="sep">◆</span>Machine Learning</div>
+      <div class="ticker-item"><span class="sep">◆</span>Deep Learning</div>
+      <div class="ticker-item"><span class="sep">◆</span>Computer Vision</div>
+      <div class="ticker-item"><span class="sep">◆</span>NLP & LLMs</div>
+      <div class="ticker-item"><span class="sep">◆</span>Robotics</div>
+      <div class="ticker-item"><span class="sep">◆</span>Data Science</div>
+      <div class="ticker-item"><span class="sep">◆</span>AI Ethics</div>
+      <div class="ticker-item"><span class="sep">◆</span>UET Lahore</div>
+      <div class="ticker-item"><span class="sep">◆</span>AAAI Global</div>
+      <!-- Duplicate for seamless loop -->
+      <div class="ticker-item"><span class="sep">◆</span>Artificial Intelligence</div>
+      <div class="ticker-item"><span class="sep">◆</span>Machine Learning</div>
+      <div class="ticker-item"><span class="sep">◆</span>Deep Learning</div>
+      <div class="ticker-item"><span class="sep">◆</span>Computer Vision</div>
+      <div class="ticker-item"><span class="sep">◆</span>NLP & LLMs</div>
+      <div class="ticker-item"><span class="sep">◆</span>Robotics</div>
+      <div class="ticker-item"><span class="sep">◆</span>Data Science</div>
+      <div class="ticker-item"><span class="sep">◆</span>AI Ethics</div>
+      <div class="ticker-item"><span class="sep">◆</span>UET Lahore</div>
+      <div class="ticker-item"><span class="sep">◆</span>AAAI Global</div>
+    </div>
+  </div>
+
+  <!-- About AAAI Global -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="tag">About</div>
+        <h2 class="section-title">Two Bodies.<br><span class="gradient-text">One Mission.</span></h2>
+        <p class="section-subtitle">We're part of something bigger — a global AI community committed to advancing artificial intelligence for the benefit of humanity.</p>
+      </div>
+      <div class="about-grid fade-up">
+        <div class="about-card">
+          <div class="card-icon">🌐</div>
+          <h3>AAAI — The Global Parent</h3>
+          <p>The Association for the Advancement of Artificial Intelligence (AAAI) is one of the world's leading organizations dedicated to advancing AI research and responsible practice. Founded in 1979, AAAI drives global discourse on AI through conferences, journals, and student chapters worldwide.</p>
+          <br>
+          <p style="color:var(--accent2);font-size:0.82rem;font-family:var(--font-mono);">aaai.org · Since 1979</p>
+        </div>
+        <div class="about-card">
+          <div class="card-icon">🏛</div>
+          <h3>AAAI-UET Body — Our Chapter</h3>
+          <p>The AAAI Student Chapter at the University of Engineering & Technology, Lahore is a community of AI-passionate engineers, researchers, and creators. We bridge the gap between academic AI theory and real-world application — right here on campus.</p>
+          <br>
+          <p style="color:var(--accent2);font-size:0.82rem;font-family:var(--font-mono);">UET Lahore · Est. 2024</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vision & Mission -->
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="tag">Direction</div>
+        <h2 class="section-title">Where We're <span class="gradient-text">Headed</span></h2>
+      </div>
+      <div class="vm-wrapper fade-up">
+        <div class="vm-card vision">
+          <span class="vm-label">// Vision</span>
+          <h3>Pakistan's Premier AI Student Community</h3>
+          <p>To become the leading platform for AI education and innovation at the student level in Pakistan — a breeding ground for researchers, engineers, and entrepreneurs who will define the future of AI in South Asia.</p>
+          <div class="vm-bg-text">VISION</div>
+        </div>
+        <div class="vm-card mission">
+          <span class="vm-label">// Mission</span>
+          <h3>Educate. Collaborate. Build.</h3>
+          <p>We democratize access to AI knowledge through workshops, seminars, and hands-on hackathons. We connect students with industry mentors and create real opportunities for meaningful AI projects that solve real problems.</p>
+          <div class="vm-bg-text">MISSION</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What We Do -->
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="tag">Activities</div>
+        <h2 class="section-title">What We <span class="gradient-text">Actually Do</span></h2>
+        <p class="section-subtitle">No cap — we run serious events. Here's how we keep the AI community thriving on campus.</p>
+      </div>
+      <div class="wedo-grid fade-up">
+        <div class="wedo-card">
+          <span class="ico">🎤</span>
+          <h4>Seminars & Talks</h4>
+          <p>Industry leaders, researchers, and practitioners sharing real insights — not just slides.</p>
+        </div>
+        <div class="wedo-card">
+          <span class="ico">🔧</span>
+          <h4>Technical Workshops</h4>
+          <p>Hands-on sessions covering ML, deep learning, Python, and modern AI toolchains.</p>
+        </div>
+        <div class="wedo-card">
+          <span class="ico">⚡</span>
+          <h4>Hackathons</h4>
+          <p>48-hour build sprints where ideas become prototypes and teams become startups.</p>
+        </div>
+        <div class="wedo-card">
+          <span class="ico">🤝</span>
+          <h4>Industry Connect</h4>
+          <p>Networking events, mentorship opportunities, and direct lines to AI companies.</p>
+        </div>
+        <div class="wedo-card">
+          <span class="ico">💡</span>
+          <h4>Project Incubation</h4>
+          <p>We help student AI projects grow from concept to presentation-ready demos.</p>
+        </div>
+        <div class="wedo-card">
+          <span class="ico">📚</span>
+          <h4>Study Groups</h4>
+          <p>Collaborative learning sessions for papers, courses, and certifications.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-logo" style="margin-bottom:0;">
+            <div class="logo-icon">AI</div>
+            AAAI-UET Body
+          </div>
+          <p>The official AAAI Student Chapter at the University of Engineering & Technology, Lahore. Building Pakistan's AI future, one student at a time.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="#" onclick="showPage('home');return false;">Home</a></li>
+            <li><a href="#" onclick="showPage('team');return false;">Core Team</a></li>
+            <li><a href="#" onclick="showPage('events');return false;">Seminars</a></li>
+            <li><a href="#" onclick="showPage('hackathons');return false;">Hackathons</a></li>
+            <li><a href="#" onclick="showPage('forms');return false;">Apply</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">GitHub</a></li>
+            <li><a href="https://aaai.org" target="_blank">AAAI Global ↗</a></li>
+            <li><a href="https://uet.edu.pk" target="_blank">UET Lahore ↗</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 AAAI-UET Body. All rights reserved.</p>
+        <p style="color:var(--accent2);">Built with 🤖 by AAAI-UET Tech Team</p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================================================
+     TEAM PAGE
+     ============================================================ -->
+<div id="page-team" class="page">
+  <div style="padding:120px 0 80px;">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="tag">Core Team</div>
+        <h2 class="section-title">The People <span class="gradient-text">Running Things</span></h2>
+        <p class="section-subtitle">Meet the dedicated team behind AAAI-UET — building Pakistan's AI community from the ground up.</p>
+      </div>
+
+      <div id="team-loading" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading team data...</p>
+      </div>
+
+      <div id="team-content" class="hidden">
+        <!-- Executive Leadership -->
+        <div class="team-section" id="section-executive">
+          <div class="team-section-header">
+            <span class="ico" style="font-size:1.3rem;">👑</span>
+            <h3>Executive Leadership</h3>
+            <span class="count" id="count-executive">0 members</span>
+          </div>
+          <div class="team-grid" id="grid-executive"></div>
+        </div>
+
+        <!-- Operations -->
+        <div class="team-section" id="section-operations">
+          <div class="team-section-header">
+            <span class="ico" style="font-size:1.3rem;">⚙️</span>
+            <h3>Operations & Administration</h3>
+            <span class="count" id="count-operations">0 members</span>
+          </div>
+          <div class="team-grid" id="grid-operations"></div>
+        </div>
+
+        <!-- Media -->
+        <div class="team-section" id="section-media">
+          <div class="team-section-header">
+            <span class="ico" style="font-size:1.3rem;">🎨</span>
+            <h3>Media, Marketing & Creative</h3>
+            <span class="count" id="count-media">0 members</span>
+          </div>
+          <div class="team-grid" id="grid-media"></div>
+        </div>
+      </div>
+
+      <div id="team-empty" class="hidden">
+        <div class="empty-state">
+          <span class="empty-emoji">🤖</span>
+          <h3>Team loading from database...</h3>
+          <p>Connect your Supabase and add team members via the admin panel.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     EVENTS PAGE
+     ============================================================ -->
+<div id="page-events" class="page">
+  <div style="padding:120px 0 80px;">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="tag">Seminars & Workshops</div>
+        <h2 class="section-title">What's <span class="gradient-text">Happening</span></h2>
+        <p class="section-subtitle">Stay updated on our latest seminars, workshops, and tech talks. Tap any card for full details.</p>
+      </div>
+
+      <div id="events-loading" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading events...</p>
+      </div>
+
+      <div class="events-grid" id="events-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     HACKATHONS PAGE
+     ============================================================ -->
+<div id="page-hackathons" class="page">
+  <div style="padding:120px 0 80px;">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="tag">Hackathons</div>
+        <h2 class="section-title">Build. Break. <span class="gradient-text">Ship.</span></h2>
+        <p class="section-subtitle">Compete in intensive AI hackathons. Real problems. Real solutions. Real prizes.</p>
+      </div>
+
+      <div id="hackathons-loading" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading hackathons...</p>
+      </div>
+
+      <div class="events-grid" id="hackathons-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     FORMS PAGE
+     ============================================================ -->
+<div id="page-forms" class="page">
+  <div style="padding:120px 0 80px;">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="tag">Apply</div>
+        <h2 class="section-title">Get <span class="gradient-text">Involved</span></h2>
+        <p class="section-subtitle">Whether you want to join the team, suggest an event, or submit a project — we want to hear from you.</p>
+      </div>
+
+      <div class="forms-tabs">
+        <button class="form-tab active" onclick="switchFormTab('registration', this)">🙋 Join Core Team</button>
+        <button class="form-tab" onclick="switchFormTab('suggestion', this)">💡 Suggest Event</button>
+        <button class="form-tab" onclick="switchFormTab('project', this)">🚀 Submit Project</button>
+      </div>
+
+      <!-- Registration Form -->
+      <div class="form-panel active" id="form-registration">
+        <div class="form-card">
+          <h3 style="font-family:var(--font-head);font-size:1.3rem;font-weight:800;margin-bottom:6px;">Core Member Registration</h3>
+          <p style="color:var(--text2);font-size:0.87rem;margin-bottom:28px;">Interested in joining the AAAI-UET Body? Fill this out and we'll be in touch.</p>
+          <div id="reg-form-content">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Full Name *</label>
+                <input type="text" id="reg-name" placeholder="Your full name" />
+              </div>
+              <div class="form-group">
+                <label>Roll Number *</label>
+                <input type="text" id="reg-roll" placeholder="e.g. 2022-EE-123" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Department *</label>
+                <select id="reg-dept">
+                  <option value="">Select department</option>
+                  <option>Computer Engineering</option>
+                  <option>Electrical Engineering</option>
+                  <option>Software Engineering</option>
+                  <option>Computer Science</option>
+                  <option>Mechanical Engineering</option>
+                  <option>Civil Engineering</option>
+                  <option>Chemical Engineering</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Session / Year *</label>
+                <input type="text" id="reg-session" placeholder="e.g. 2022-2026" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Role Interest *</label>
+              <select id="reg-role">
+                <option value="">Select area of interest</option>
+                <option>Executive Leadership</option>
+                <option>Operations & Administration</option>
+                <option>Media & Marketing</option>
+                <option>Technical / Development</option>
+                <option>Content & Creative</option>
+                <option>Event Management</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Why do you want to join? *</label>
+              <textarea id="reg-desc" placeholder="Tell us about yourself, your skills, and why you want to be part of AAAI-UET..."></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="submitRegistration()" style="width:100%;justify-content:center;">
+              Submit Application 🚀
+            </button>
+          </div>
+          <div class="form-success hidden" id="reg-success">
+            <div class="check">✓</div>
+            <h3>Application Submitted!</h3>
+            <p>Thanks for applying to AAAI-UET Body. We'll review your application and get back to you soon.</p>
+            <button class="btn btn-ghost" style="margin-top:16px;" onclick="resetForm('registration')">Submit Another</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suggestion Form -->
+      <div class="form-panel" id="form-suggestion">
+        <div class="form-card">
+          <h3 style="font-family:var(--font-head);font-size:1.3rem;font-weight:800;margin-bottom:6px;">Suggest an Event</h3>
+          <p style="color:var(--text2);font-size:0.87rem;margin-bottom:28px;">Got a killer idea for a seminar, workshop, or event? Drop it here.</p>
+          <div id="sug-form-content">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Full Name *</label>
+                <input type="text" id="sug-name" placeholder="Your full name" />
+              </div>
+              <div class="form-group">
+                <label>Roll Number *</label>
+                <input type="text" id="sug-roll" placeholder="e.g. 2022-EE-123" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Department *</label>
+                <select id="sug-dept">
+                  <option value="">Select department</option>
+                  <option>Computer Engineering</option>
+                  <option>Electrical Engineering</option>
+                  <option>Software Engineering</option>
+                  <option>Computer Science</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Session / Year *</label>
+                <input type="text" id="sug-session" placeholder="e.g. 2022-2026" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Your Event Suggestion *</label>
+              <textarea id="sug-text" placeholder="Describe your event idea — topic, format, potential speakers, why it would be valuable..." style="min-height:150px;"></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="submitSuggestion()" style="width:100%;justify-content:center;">
+              Send Suggestion 💡
+            </button>
+          </div>
+          <div class="form-success hidden" id="sug-success">
+            <div class="check">✓</div>
+            <h3>Suggestion Received!</h3>
+            <p>We love good ideas. Your suggestion has been sent to our events team. Let's make it happen!</p>
+            <button class="btn btn-ghost" style="margin-top:16px;" onclick="resetForm('suggestion')">Submit Another</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project Form -->
+      <div class="form-panel" id="form-project">
+        <div class="form-card">
+          <h3 style="font-family:var(--font-head);font-size:1.3rem;font-weight:800;margin-bottom:6px;">Submit Your AI Project</h3>
+          <p style="color:var(--text2);font-size:0.87rem;margin-bottom:28px;">Built something cool? Submit your AI project for showcase and potential incubation support.</p>
+          <div id="proj-form-content">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Full Name *</label>
+                <input type="text" id="proj-name" placeholder="Your full name" />
+              </div>
+              <div class="form-group">
+                <label>Roll Number *</label>
+                <input type="text" id="proj-roll" placeholder="e.g. 2022-EE-123" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Department *</label>
+                <select id="proj-dept">
+                  <option value="">Select department</option>
+                  <option>Computer Engineering</option>
+                  <option>Electrical Engineering</option>
+                  <option>Software Engineering</option>
+                  <option>Computer Science</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Session / Year *</label>
+                <input type="text" id="proj-session" placeholder="e.g. 2022-2026" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Phone Number *</label>
+              <input type="tel" id="proj-phone" placeholder="+92 300 0000000" />
+            </div>
+            <div class="form-group">
+              <label>Project Description *</label>
+              <textarea id="proj-desc" placeholder="Describe your project — what it does, tech stack used, the problem it solves, current status..." style="min-height:150px;"></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="submitProject()" style="width:100%;justify-content:center;">
+              Submit Project 🚀
+            </button>
+          </div>
+          <div class="form-success hidden" id="proj-success">
+            <div class="check">✓</div>
+            <h3>Project Submitted!</h3>
+            <p>Awesome! Our team will review your project submission and reach out via phone. Keep building! 🔥</p>
+            <button class="btn btn-ghost" style="margin-top:16px;" onclick="resetForm('project')">Submit Another</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     ADMIN LOGIN PAGE
+     ============================================================ -->
+<div id="page-admin-login" class="page">
+  <div id="admin-login">
+    <div class="login-card">
+      <div class="lock-icon">🔐</div>
+      <h2>Admin Access</h2>
+      <p>AAAI-UET Body · Admin Panel</p>
+      <div id="login-error" class="login-error hidden"></div>
+      <div class="form-group" style="text-align:left;">
+        <label>Email</label>
+        <input type="email" id="admin-email" placeholder="admin@aaai-uet.com" />
+      </div>
+      <div class="form-group" style="text-align:left;">
+        <label>Password</label>
+        <input type="password" id="admin-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()" />
+      </div>
+      <button class="btn btn-primary" onclick="adminLogin()" style="width:100%;justify-content:center;margin-top:8px;">
+        Sign In →
+      </button>
+      <button class="btn btn-ghost" onclick="showPage('home')" style="width:100%;justify-content:center;margin-top:12px;">
+        ← Back to Website
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     ADMIN PANEL PAGE
+     ============================================================ -->
+<div id="page-admin" class="page">
+  <div id="admin-panel">
+    <!-- Sidebar -->
+    <div class="admin-sidebar">
+      <div class="sidebar-brand">⚡ AAAI-UET Admin</div>
+      <div class="sidebar-label">Overview</div>
+      <button class="admin-nav-item active" onclick="switchAdminSection('dashboard', this)">
+        <span class="nav-icon">📊</span> Dashboard
+      </button>
+      <div class="sidebar-label">Content</div>
+      <button class="admin-nav-item" onclick="switchAdminSection('members', this)">
+        <span class="nav-icon">👥</span> Core Members
+      </button>
+      <button class="admin-nav-item" onclick="switchAdminSection('events', this)">
+        <span class="nav-icon">📅</span> Events
+      </button>
+      <button class="admin-nav-item" onclick="switchAdminSection('hackathons_admin', this)">
+        <span class="nav-icon">⚡</span> Hackathons
+      </button>
+      <div class="sidebar-label">Submissions</div>
+      <button class="admin-nav-item" onclick="switchAdminSection('registrations', this)">
+        <span class="nav-icon">🙋</span> Registrations
+      </button>
+      <button class="admin-nav-item" onclick="switchAdminSection('suggestions', this)">
+        <span class="nav-icon">💡</span> Suggestions
+      </button>
+      <button class="admin-nav-item" onclick="switchAdminSection('projects', this)">
+        <span class="nav-icon">🚀</span> Projects
+      </button>
+      <div class="admin-logout">
+        <button class="admin-nav-item" onclick="adminLogout()" style="color:var(--red);">
+          <span class="nav-icon">🚪</span> Sign Out
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-main">
+
+      <!-- Dashboard -->
+      <div class="admin-section active" id="admin-dashboard">
+        <div class="admin-header">
+          <h1>Dashboard 📊</h1>
+          <p>Welcome back, Admin. Here's your overview.</p>
+        </div>
+        <div class="admin-stats-grid" id="admin-stats-grid">
+          <div class="admin-stat"><div class="stat-val" id="stat-members">—</div><div class="stat-lbl">Core Members</div></div>
+          <div class="admin-stat"><div class="stat-val" id="stat-events">—</div><div class="stat-lbl">Events</div></div>
+          <div class="admin-stat"><div class="stat-val" id="stat-hackathons">—</div><div class="stat-lbl">Hackathons</div></div>
+          <div class="admin-stat"><div class="stat-val" id="stat-regs">—</div><div class="stat-lbl">Registrations</div></div>
+          <div class="admin-stat"><div class="stat-val" id="stat-sugs">—</div><div class="stat-lbl">Suggestions</div></div>
+          <div class="admin-stat"><div class="stat-val" id="stat-projs">—</div><div class="stat-lbl">Projects</div></div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;">
+          <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--text3);">// Quick guide: Use sidebar to manage content. All changes reflect on the public website instantly.</p>
+        </div>
+      </div>
+
+      <!-- Members Management -->
+      <div class="admin-section" id="admin-members">
+        <div class="admin-header">
+          <h1>Core Members 👥</h1>
+          <p>Add, edit, and organize your team members.</p>
+        </div>
+        <div class="admin-toolbar">
+          <h3>All Members</h3>
+          <button class="btn btn-primary" onclick="openMemberModal()">+ Add Member</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Section</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="members-tbody">
+              <tr><td colspan="4" style="text-align:center;color:var(--text3);padding:40px;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Events Management -->
+      <div class="admin-section" id="admin-events">
+        <div class="admin-header">
+          <h1>Events 📅</h1>
+          <p>Manage seminars and workshops.</p>
+        </div>
+        <div class="admin-toolbar">
+          <h3>All Events</h3>
+          <button class="btn btn-primary" onclick="openEventAdminModal('event')">+ Add Event</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Venue</th>
+                <th>Fee</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="events-tbody">
+              <tr><td colspan="5" style="text-align:center;color:var(--text3);padding:40px;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Hackathons Management -->
+      <div class="admin-section" id="admin-hackathons_admin">
+        <div class="admin-header">
+          <h1>Hackathons ⚡</h1>
+          <p>Manage hackathon listings.</p>
+        </div>
+        <div class="admin-toolbar">
+          <h3>All Hackathons</h3>
+          <button class="btn btn-primary" onclick="openEventAdminModal('hackathon')">+ Add Hackathon</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Venue</th>
+                <th>Fee</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="hackathons-tbody">
+              <tr><td colspan="5" style="text-align:center;color:var(--text3);padding:40px;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Registrations -->
+      <div class="admin-section" id="admin-registrations">
+        <div class="admin-header">
+          <h1>Registrations 🙋</h1>
+          <p>People who want to join the core team.</p>
+        </div>
+        <div id="registrations-list"><div class="loading-spinner"><div class="spinner"></div></div></div>
+      </div>
+
+      <!-- Suggestions -->
+      <div class="admin-section" id="admin-suggestions">
+        <div class="admin-header">
+          <h1>Event Suggestions 💡</h1>
+          <p>Community ideas for events and workshops.</p>
+        </div>
+        <div id="suggestions-list"><div class="loading-spinner"><div class="spinner"></div></div></div>
+      </div>
+
+      <!-- Projects -->
+      <div class="admin-section" id="admin-projects">
+        <div class="admin-header">
+          <h1>Project Submissions 🚀</h1>
+          <p>AI projects submitted by students.</p>
+        </div>
+        <div id="projects-list"><div class="loading-spinner"><div class="spinner"></div></div></div>
+      </div>
+
+    </div><!-- end admin-main -->
+  </div><!-- end admin-panel -->
+
+  <!-- Member Modal -->
+  <div class="admin-modal" id="member-modal">
+    <div class="admin-modal-inner">
+      <div class="admin-modal-header">
+        <h3 id="member-modal-title">Add Member</h3>
+        <button class="modal-close" onclick="closeMemberModal()">✕</button>
+      </div>
+      <input type="hidden" id="member-id" />
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="m-name" placeholder="Member name" />
+        </div>
+        <div class="form-group">
+          <label>Role / Title *</label>
+          <input type="text" id="m-role" placeholder="e.g. President" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Section *</label>
+        <select id="m-section">
+          <option value="executive">Executive Leadership</option>
+          <option value="operations">Operations & Administration</option>
+          <option value="media">Media, Marketing & Creative</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="m-desc" placeholder="Short bio or role description..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Photo URL (optional)</label>
+        <input type="url" id="m-img" placeholder="https://... (link to image)" />
+      </div>
+      <div style="display:flex;gap:12px;margin-top:8px;">
+        <button class="btn btn-success" onclick="saveMember()" style="flex:1;justify-content:center;">Save Member</button>
+        <button class="btn btn-ghost" onclick="closeMemberModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event/Hackathon Admin Modal -->
+  <div class="admin-modal" id="event-admin-modal">
+    <div class="admin-modal-inner">
+      <div class="admin-modal-header">
+        <h3 id="event-modal-title">Add Event</h3>
+        <button class="modal-close" onclick="closeEventAdminModal()">✕</button>
+      </div>
+      <input type="hidden" id="event-id" />
+      <input type="hidden" id="event-type-hidden" />
+      <div class="form-group">
+        <label>Title *</label>
+        <input type="text" id="ev-title" placeholder="Event title" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date *</label>
+          <input type="date" id="ev-date" />
+        </div>
+        <div class="form-group">
+          <label>Day</label>
+          <input type="text" id="ev-day" placeholder="e.g. Saturday" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Time</label>
+          <input type="text" id="ev-time" placeholder="e.g. 2:00 PM – 5:00 PM" />
+        </div>
+        <div class="form-group">
+          <label>Venue</label>
+          <input type="text" id="ev-venue" placeholder="Location / room" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Registration Fee</label>
+          <input type="text" id="ev-fee" placeholder="Free / Rs. 500" />
+        </div>
+        <div class="form-group">
+          <label>Contact Number</label>
+          <input type="text" id="ev-contact" placeholder="+92..." />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="ev-desc" placeholder="Event description..."></textarea>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:8px;">
+        <button class="btn btn-success" onclick="saveEvent()" style="flex:1;justify-content:center;">Save</button>
+        <button class="btn btn-ghost" onclick="closeEventAdminModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end page-admin -->
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+// ================================================================
+//  ⚙️  CONFIGURATION — REPLACE WITH YOUR SUPABASE CREDENTIALS
+//  Get these from: https://supabase.com → Your Project → Settings → API
+// ================================================================
+const SUPABASE_URL = 'https://ghldentplpugaagfwjws.supabase.co/rest/v1/';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdobGRlbnRwbHB1Z2FhZ2Z3andzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NDU0MjIsImV4cCI6MjA5MzEyMTQyMn0.e2lpf-raL1eRzSCrG8iBussf-kOvB_jhgzdfrbsX0jc';
+// ================================================================
+
+let supabase_client = null;
+let currentUser = null;
+let adminMode = false;
+
+// Init Supabase
+function initSupabase() {
+  if (SUPABASE_URL === 'https://ghldentplpugaagfwjws.supabase.co/rest/v1/') {
+    console.warn('⚠️ Supabase not configured. Add your credentials in the script section.');
+    return false;
+  }
+  try {
+    supabase_client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    document.getElementById('config-banner').style.display = 'none';
+    return true;
+  } catch(e) {
+    console.error('Supabase init failed:', e);
+    return false;
+  }
+}
+
+// ================================================================
+// NAVIGATION
+// ================================================================
+let currentPage = 'home';
+
+function showPage(page) {
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  
+  // Update nav active state
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const navItem = document.getElementById('nav-' + page);
+  if (navItem) navItem.classList.add('active');
+  
+  currentPage = page;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Load data for pages
+  if (page === 'team') loadTeam();
+  if (page === 'events') loadEvents();
+  if (page === 'hackathons') loadHackathons();
+  
+  // Trigger fade-up animations
+  setTimeout(triggerFadeUps, 100);
+}
+
+function showAdminLogin() {
+  if (adminMode) {
+    showPage('admin');
+    return;
+  }
+  showPage('admin-login');
+}
+
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+}
+
+function closeMobileMenu() {
+  document.getElementById('mobile-menu').style.display = 'none';
+}
+
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+  const nb = document.getElementById('navbar');
+  nb.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// Fade-up on scroll
+function triggerFadeUps() {
+  const els = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(el => observer.observe(el));
+}
+
+// ================================================================
+// TOAST
+// ================================================================
+function toast(msg, type = 'success') {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 4000);
+}
+
+// ================================================================
+// TEAM PAGE
+// ================================================================
+async function loadTeam() {
+  if (!supabase_client) {
+    showTeamFallback();
+    return;
+  }
+  document.getElementById('team-loading').classList.remove('hidden');
+  document.getElementById('team-content').classList.add('hidden');
+  document.getElementById('team-empty').classList.add('hidden');
+
+  const { data, error } = await supabase_client.from('members').select('*').order('created_at', { ascending: true });
+  
+  document.getElementById('team-loading').classList.add('hidden');
+  
+  if (error || !data || data.length === 0) {
+    document.getElementById('team-empty').classList.remove('hidden');
+    return;
+  }
+
+  const sections = { executive: [], operations: [], media: [] };
+  data.forEach(m => { if (sections[m.section]) sections[m.section].push(m); });
+  
+  renderTeamSection('executive', sections.executive);
+  renderTeamSection('operations', sections.operations);
+  renderTeamSection('media', sections.media);
+  
+  document.getElementById('team-content').classList.remove('hidden');
+}
+
+function renderTeamSection(key, members) {
+  const grid = document.getElementById('grid-' + key);
+  const count = document.getElementById('count-' + key);
+  count.textContent = members.length + ' member' + (members.length !== 1 ? 's' : '');
+  
+  if (members.length === 0) {
+    grid.innerHTML = '<p style="color:var(--text3);font-size:0.87rem;grid-column:1/-1;">No members in this section yet.</p>';
+    return;
+  }
+
+  grid.innerHTML = members.map(m => `
+    <div class="member-card">
+      <div class="member-avatar">
+        ${m.image_url ? `<img src="${m.image_url}" alt="${m.name}" onerror="this.style.display='none';this.parentElement.textContent='${m.name[0]}'" />` : m.name[0]}
+      </div>
+      <div class="member-name">${m.name}</div>
+      <div class="member-role">${m.role}</div>
+      ${m.description ? `<div class="member-desc">${m.description}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+function showTeamFallback() {
+  document.getElementById('team-loading').classList.add('hidden');
+  document.getElementById('team-empty').classList.remove('hidden');
+}
+
+// ================================================================
+// EVENTS / HACKATHONS
+// ================================================================
+async function loadEvents() {
+  if (!supabase_client) {
+    renderEventCards('events-grid', [], 'event');
+    document.getElementById('events-loading').classList.add('hidden');
+    return;
+  }
+  document.getElementById('events-loading').style.display = 'flex';
+  const { data } = await supabase_client.from('events').select('*').eq('type', 'event').order('date', { ascending: true });
+  document.getElementById('events-loading').style.display = 'none';
+  renderEventCards('events-grid', data || [], 'event');
+}
+
+async function loadHackathons() {
+  if (!supabase_client) {
+    renderEventCards('hackathons-grid', [], 'hackathon');
+    document.getElementById('hackathons-loading').classList.add('hidden');
+    return;
+  }
+  document.getElementById('hackathons-loading').style.display = 'flex';
+  const { data } = await supabase_client.from('events').select('*').eq('type', 'hackathon').order('date', { ascending: true });
+  document.getElementById('hackathons-loading').style.display = 'none';
+  renderEventCards('hackathons-grid', data || [], 'hackathon');
+}
+
+function renderEventCards(containerId, events, type) {
+  const container = document.getElementById(containerId);
+  if (!events || events.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <span class="empty-emoji">${type === 'event' ? '😴' : '🤔'}</span>
+        <h3>${type === 'event' ? 'No events rn 😴... go study before AI replaces you 💀' : 'No hackathons listed yet 🦗'}</h3>
+        <p>${type === 'event' ? 'Check back soon — we\'re cooking something 🍳' : 'Stay tuned. Something big is coming... probably.'}</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = events.map(ev => `
+    <div class="event-card" onclick="openEventModal(${JSON.stringify(ev).replace(/"/g, '&quot;')})">
+      <div class="event-card-header">
+        <div class="event-date">${formatDate(ev.date)}${ev.day ? ' · ' + ev.day : ''}</div>
+        <h3>${ev.title}</h3>
+      </div>
+      <div class="event-card-body">
+        <div class="event-meta">
+          ${ev.time ? `<div class="event-meta-item"><span class="icon">🕐</span> ${ev.time}</div>` : ''}
+          ${ev.venue ? `<div class="event-meta-item"><span class="icon">📍</span> ${ev.venue}</div>` : ''}
+          ${ev.contact ? `<div class="event-meta-item"><span class="icon">📞</span> ${ev.contact}</div>` : ''}
+        </div>
+        ${ev.description ? `<div class="event-desc">${ev.description}</div>` : ''}
+        <div class="event-footer">
+          <span class="fee-badge ${(!ev.fee || ev.fee.toLowerCase() === 'free') ? 'fee-free' : 'fee-paid'}">
+            ${ev.fee || 'Free'}
+          </span>
+          <span style="font-size:0.8rem;color:var(--accent2);">View Details →</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return 'TBD';
+  try {
+    return new Date(dateStr).toLocaleDateString('en-PK', { day: 'numeric', month: 'short', year: 'numeric' });
+  } catch { return dateStr; }
+}
+
+let currentEventData = null;
+
+function openEventModal(ev) {
+  currentEventData = ev;
+  document.getElementById('modal-title').textContent = ev.title;
+  document.getElementById('modal-type-tag').textContent = ev.type === 'hackathon' ? 'HACKATHON' : 'EVENT';
+  
+  const rows = [
+    { label: '📅 Date', value: formatDate(ev.date) },
+    { label: '📆 Day', value: ev.day },
+    { label: '🕐 Time', value: ev.time },
+    { label: '📍 Venue', value: ev.venue },
+    { label: '💰 Fee', value: ev.fee || 'Free' },
+    { label: '📞 Contact', value: ev.contact },
+  ].filter(r => r.value);
+
+  document.getElementById('modal-body').innerHTML = `
+    <div style="margin-bottom:20px;">
+      ${rows.map(r => `
+        <div class="modal-detail-row">
+          <span class="label">${r.label}</span>
+          <span class="value">${r.value}</span>
+        </div>
+      `).join('')}
+    </div>
+    ${ev.description ? `<div style="background:var(--bg3);border-radius:10px;padding:20px;color:var(--text2);font-size:0.92rem;line-height:1.7;">${ev.description}</div>` : ''}
+  `;
+  
+  document.getElementById('eventModal').classList.add('open');
+}
+
+function closeEventModal(e) {
+  if (e && e.target !== document.getElementById('eventModal')) return;
+  document.getElementById('eventModal').classList.remove('open');
+}
+
+// ================================================================
+// FORMS
+// ================================================================
+function switchFormTab(tab, btn) {
+  document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('form-' + tab).classList.add('active');
+}
+
+function getVal(id) { return document.getElementById(id).value.trim(); }
+
+async function submitRegistration() {
+  const data = {
+    name: getVal('reg-name'),
+    roll_number: getVal('reg-roll'),
+    department: getVal('reg-dept'),
+    session: getVal('reg-session'),
+    role_interest: getVal('reg-role'),
+    description: getVal('reg-desc'),
+  };
+
+  if (!data.name || !data.roll_number || !data.department || !data.role_interest) {
+    toast('Please fill all required fields.', 'error'); return;
+  }
+
+  if (!supabase_client) {
+    toast('Database not connected. See setup guide.', 'error'); return;
+  }
+
+  const { error } = await supabase_client.from('registrations').insert([data]);
+  if (error) { toast('Error: ' + error.message, 'error'); return; }
+  
+  document.getElementById('reg-form-content').classList.add('hidden');
+  document.getElementById('reg-success').classList.remove('hidden');
+  toast('Application submitted! 🎉');
+}
+
+async function submitSuggestion() {
+  const data = {
+    name: getVal('sug-name'),
+    roll_number: getVal('sug-roll'),
+    department: getVal('sug-dept'),
+    session: getVal('sug-session'),
+    suggestion: getVal('sug-text'),
+  };
+
+  if (!data.name || !data.roll_number || !data.suggestion) {
+    toast('Please fill all required fields.', 'error'); return;
+  }
+
+  if (!supabase_client) {
+    toast('Database not connected. See setup guide.', 'error'); return;
+  }
+
+  const { error } = await supabase_client.from('suggestions').insert([data]);
+  if (error) { toast('Error: ' + error.message, 'error'); return; }
+  
+  document.getElementById('sug-form-content').classList.add('hidden');
+  document.getElementById('sug-success').classList.remove('hidden');
+  toast('Suggestion sent! 💡');
+}
+
+async function submitProject() {
+  const data = {
+    name: getVal('proj-name'),
+    roll_number: getVal('proj-roll'),
+    department: getVal('proj-dept'),
+    session: getVal('proj-session'),
+    phone: getVal('proj-phone'),
+    description: getVal('proj-desc'),
+  };
+
+  if (!data.name || !data.roll_number || !data.phone || !data.description) {
+    toast('Please fill all required fields.', 'error'); return;
+  }
+
+  if (!supabase_client) {
+    toast('Database not connected. See setup guide.', 'error'); return;
+  }
+
+  const { error } = await supabase_client.from('project_submissions').insert([data]);
+  if (error) { toast('Error: ' + error.message, 'error'); return; }
+  
+  document.getElementById('proj-form-content').classList.add('hidden');
+  document.getElementById('proj-success').classList.remove('hidden');
+  toast('Project submitted! 🚀');
+}
+
+function resetForm(type) {
+  if (type === 'registration') {
+    ['reg-name','reg-roll','reg-session','reg-desc'].forEach(id => document.getElementById(id).value = '');
+    ['reg-dept','reg-role'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('reg-form-content').classList.remove('hidden');
+    document.getElementById('reg-success').classList.add('hidden');
+  }
+  if (type === 'suggestion') {
+    ['sug-name','sug-roll','sug-session','sug-text'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('sug-dept').value = '';
+    document.getElementById('sug-form-content').classList.remove('hidden');
+    document.getElementById('sug-success').classList.add('hidden');
+  }
+  if (type === 'project') {
+    ['proj-name','proj-roll','proj-session','proj-phone','proj-desc'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('proj-dept').value = '';
+    document.getElementById('proj-form-content').classList.remove('hidden');
+    document.getElementById('proj-success').classList.add('hidden');
+  }
+}
+
+// ================================================================
+// ADMIN AUTH
+// ================================================================
+async function adminLogin() {
+  const email = getVal('admin-email');
+  const pass = document.getElementById('admin-password').value;
+  const errEl = document.getElementById('login-error');
+  errEl.classList.add('hidden');
+
+  if (!supabase_client) {
+    errEl.textContent = 'Database not configured. Add your Supabase credentials first.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  const { data, error } = await supabase_client.auth.signInWithPassword({ email, password: pass });
+  
+  if (error) {
+    errEl.textContent = error.message;
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  currentUser = data.user;
+  adminMode = true;
+  showPage('admin');
+  loadAdminDashboard();
+  toast('Logged in successfully 🎉');
+}
+
+async function adminLogout() {
+  if (supabase_client) await supabase_client.auth.signOut();
+  currentUser = null;
+  adminMode = false;
+  showPage('home');
+  toast('Logged out.');
+}
+
+// Check existing session on load
+async function checkSession() {
+  if (!supabase_client) return;
+  const { data } = await supabase_client.auth.getSession();
+  if (data.session) {
+    currentUser = data.session.user;
+    adminMode = true;
+  }
+}
+
+// ================================================================
+// ADMIN DASHBOARD
+// ================================================================
+function switchAdminSection(section, btn) {
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.admin-nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('admin-' + section).classList.add('active');
+  btn.classList.add('active');
+
+  if (section === 'dashboard') loadAdminDashboard();
+  if (section === 'members') loadAdminMembers();
+  if (section === 'events') loadAdminEvents();
+  if (section === 'hackathons_admin') loadAdminHackathons();
+  if (section === 'registrations') loadAdminSubs('registrations', 'registrations-list');
+  if (section === 'suggestions') loadAdminSubs('suggestions', 'suggestions-list');
+  if (section === 'projects') loadAdminSubs('project_submissions', 'projects-list');
+}
+
+async function loadAdminDashboard() {
+  if (!supabase_client) return;
+  const tables = [
+    ['members', 'stat-members'],
+    ['events', 'stat-events'],
+    ['registrations', 'stat-regs'],
+    ['suggestions', 'stat-sugs'],
+    ['project_submissions', 'stat-projs'],
+  ];
+
+  for (const [table, statId] of tables) {
+    const { count } = await supabase_client.from(table).select('*', { count: 'exact', head: true });
+    document.getElementById(statId).textContent = count ?? 0;
+  }
+
+  // events count split
+  const { count: evCount } = await supabase_client.from('events').select('*', { count: 'exact', head: true }).eq('type', 'event');
+  const { count: hkCount } = await supabase_client.from('events').select('*', { count: 'exact', head: true }).eq('type', 'hackathon');
+  document.getElementById('stat-events').textContent = evCount ?? 0;
+  document.getElementById('stat-hackathons').textContent = hkCount ?? 0;
+}
+
+// ================================================================
+// ADMIN MEMBERS CRUD
+// ================================================================
+let allMembers = [];
+
+async function loadAdminMembers() {
+  if (!supabase_client) return;
+  const { data } = await supabase_client.from('members').select('*').order('created_at', { ascending: false });
+  allMembers = data || [];
+  renderMembersTable();
+}
+
+function renderMembersTable() {
+  const tbody = document.getElementById('members-tbody');
+  if (allMembers.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text3);padding:40px;">No members yet. Add your first one!</td></tr>';
+    return;
+  }
+
+  const sectionLabels = { executive: 'Executive', operations: 'Operations', media: 'Media & Creative' };
+  const sectionBadge = { executive: 'badge-blue', operations: 'badge-green', media: 'badge-purple' };
+
+  tbody.innerHTML = allMembers.map(m => `
+    <tr>
+      <td><strong>${m.name}</strong></td>
+      <td style="color:var(--text2);">${m.role}</td>
+      <td><span class="badge ${sectionBadge[m.section] || 'badge-blue'}">${sectionLabels[m.section] || m.section}</span></td>
+      <td class="td-actions">
+        <button class="btn btn-ghost" onclick='openMemberModal(${JSON.stringify(m)})'>Edit</button>
+        <button class="btn btn-danger" onclick="deleteMember('${m.id}')">Delete</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openMemberModal(member = null) {
+  document.getElementById('member-modal-title').textContent = member ? 'Edit Member' : 'Add Member';
+  document.getElementById('member-id').value = member ? member.id : '';
+  document.getElementById('m-name').value = member ? member.name : '';
+  document.getElementById('m-role').value = member ? member.role : '';
+  document.getElementById('m-section').value = member ? member.section : 'executive';
+  document.getElementById('m-desc').value = member ? (member.description || '') : '';
+  document.getElementById('m-img').value = member ? (member.image_url || '') : '';
+  document.getElementById('member-modal').classList.add('open');
+}
+
+function closeMemberModal() {
+  document.getElementById('member-modal').classList.remove('open');
+}
+
+async function saveMember() {
+  const id = document.getElementById('member-id').value;
+  const payload = {
+    name: getVal('m-name'),
+    role: getVal('m-role'),
+    section: document.getElementById('m-section').value,
+    description: getVal('m-desc'),
+    image_url: getVal('m-img') || null,
+  };
+
+  if (!payload.name || !payload.role) { toast('Name and role are required.', 'error'); return; }
+
+  let error;
+  if (id) {
+    ({ error } = await supabase_client.from('members').update(payload).eq('id', id));
+  } else {
+    ({ error } = await supabase_client.from('members').insert([payload]));
+  }
+
+  if (error) { toast('Error: ' + error.message, 'error'); return; }
+  
+  toast(id ? 'Member updated!' : 'Member added!');
+  closeMemberModal();
+  loadAdminMembers();
+}
+
+async function deleteMember(id) {
+  if (!confirm('Delete this member?')) return;
+  const { error } = await supabase_client.from('members').delete().eq('id', id);
+  if (error) { toast('Error: ' + error.message, 'error'); return; }
+  toast('Member deleted.');
+  loadAdminMembers();
+}
+
+// ================================================================
+// ADMIN EVENTS CRUD
+// ================================================================
+let allEvents = [];
+
+async function loadAdminEvents() {
+  if (!supabase_client) return;
+  const { data } = await supabase_client.from('events').select('*').eq('type', 'event').order('date', { ascending: false });
+  allEvents = data || [];
+  renderEventsAdminTable('events-tbody', allEvents);
+}
+
+async function loadAdminHackathons() {
+  if (!supabase_client) return;
+  const { data } = await supabase_client.from('events').select('*').eq('type', 'hackathon').order('date', { ascending: false });
+  renderEventsAdminTable('hackathons-tbody', data || []);
+}
+
+function renderEventsAdminTable(tbodyId, events) {
+  const tbody = document.getElementById(tbodyId);
+  if (events.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:40px;">None yet. Add one!</td></tr>';
+    return;
+  }
+  tbody.innerHTML = events.map(ev => `
+    <tr>
+      <td><strong>${ev.title}</strong></td>
+      <td style="color:var(--text2);">${formatDate(ev.date)}</td>
+      <td style="color:var(--text2);">${ev.venue || '—'}</td>
+      <td><span class="badge ${(!ev.fee || ev.fee.toLowerCase() === 'free') ? 'badge-green' : 'badge-blue'}">${ev.fee || 'Free'}</span></td>
+      <td class="td-actions">
+        <button class="btn btn-ghost" onclick='openEventAdminModal("${ev.type}", ${JSON.stringify(ev)})'>Edit</button>
+        <button class="btn btn-danger" onclick="deleteEvent('${ev.id}')">Delete</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openEventAdminModal(type, ev = null) {
+  document.getElementById('event-modal-title').textContent = ev ? `Edit ${type === 'hackathon' ? 'Hackathon' : 'Event'}` : `Add ${type === 'hackathon' ? 'Hackathon' : 'Event'}`;
+  document.getElementById('event-id').value = ev ? ev.id : '';
+  document.getElementById('event-type-hidden').value = type;
+  document.getElementById('ev-title').value = ev ? ev.title : '';
+  document.getElementById('ev-date').value = ev ? (ev.date || '') : '';
+  document.getElementById('ev-day').value = ev ? (ev.day || '') : '';
+  document.getElementById('ev-time').value = ev ? (ev.time || '') : '';
+  document.getElementById('ev-venue').value = ev ? (ev.venue || '') : '';
+  document.getElementById('ev-fee').value = ev ? (ev.fee || '') : '';
+  document.getElementById('ev-contact').value = ev ? (ev.contact || '') : '';
+  document.getElementById('ev-desc').value = ev ? (ev.description || '') : '';
+  document.getElementById('event-admin-modal').classList.add('open');
+}
+
+function closeEventAdminModal() {
+  document.getElementById('event-admin-modal').classList.remove('open');
+}
+
+async function saveEvent() {
+  const id = document.getElementById('event-id').value;
+  const payload = {
+    title: getVal('ev-title'),
+    date: document.getElementById('ev-date').value || null,
+    day: getVal('ev-day') || null,
+    time: getVal('ev-time') || null,
+    venue: getVal('ev-venue') || null,
+    fee: getVal('ev-fee') || null,
+    contact: getVal('ev-contact') || null,
+    description: getVal('ev-desc') || null,
+    type: document.getElementById('event-type-hidden').value,
+  };
+
+  if (!payload.title) { toast('Title is required.', 'error'); return; }
+
+  let error;
+  if (id) {
+    ({ error } = await supabase_client.from('events').update(payload).eq('id', id));
+  } else {
+    ({ error } = await supabase_client.from('events').insert([payload]));
+  }
+
+  if (error) { toast('Error: ' + error.message, 'error'); return; }
+  
+  toast('Saved!');
+  closeEventAdminModal();
+  if (payload.type === 'event') loadAdminEvents();
+  else loadAdminHackathons();
+}
+
+async function deleteEvent(id) {
+  if (!confirm('Delete this entry?')) return;
+  const { error } = await supabase_client.from('events').delete().eq('id', id);
+  if (error) { toast('Error: ' + error.message, 'error'); return; }
+  toast('Deleted.');
+  loadAdminEvents();
+  loadAdminHackathons();
+}
+
+// ================================================================
+// ADMIN SUBMISSIONS VIEW
+// ================================================================
+async function loadAdminSubs(table, containerId) {
+  if (!supabase_client) return;
+  const container = document.getElementById(containerId);
+  container.innerHTML = '<div class="loading-spinner"><div class="spinner"></div></div>';
+  
+  const { data } = await supabase_client.from(table).select('*').order('created_at', { ascending: false });
+  
+  if (!data || data.length === 0) {
+    container.innerHTML = '<div class="empty-state"><span class="empty-emoji">📭</span><h3>No submissions yet</h3><p>They\'ll show up here once people start submitting.</p></div>';
+    return;
+  }
+
+  container.innerHTML = data.map(sub => {
+    const dateStr = sub.created_at ? new Date(sub.created_at).toLocaleDateString('en-PK', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '';
+    const meta = [
+      sub.roll_number && `🎫 ${sub.roll_number}`,
+      sub.department && `🏛 ${sub.department}`,
+      sub.session && `📅 ${sub.session}`,
+      sub.phone && `📞 ${sub.phone}`,
+      sub.role_interest && `🎯 ${sub.role_interest}`,
+    ].filter(Boolean).join(' · ');
+
+    const text = sub.description || sub.suggestion || sub.reason || '';
+
+    return `
+      <div class="sub-card">
+        <div class="sub-card-header">
+          <div>
+            <h4>${sub.name || 'Anonymous'}</h4>
+            <div class="sub-card-meta">${meta ? `<span>${meta}</span>` : ''}</div>
+          </div>
+          <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text3);flex-shrink:0;">${dateStr}</span>
+        </div>
+        ${text ? `<p>${text}</p>` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+// ================================================================
+// INIT
+// ================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  const ok = initSupabase();
+  if (ok) checkSession();
+  triggerFadeUps();
+});
+</script>
+
+<!--
+=================================================================
+  📘 SUPABASE SETUP GUIDE
+=================================================================
+
+STEP 1: Create Supabase project
+  → https://supabase.com → New Project
+  → Note your Project URL and anon/public key
+
+STEP 2: Add your credentials
+  → Find the two lines near the bottom of this file:
+    const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+    const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+  → Replace with your actual values
+
+STEP 3: Run this SQL in Supabase → SQL Editor
+
+-- MEMBERS TABLE
+create table members (
+  id uuid default gen_random_uuid() primary key,
+  name text not null,
+  role text not null,
+  section text not null check (section in ('executive','operations','media')),
+  description text,
+  image_url text,
+  created_at timestamptz default now()
+);
+
+-- EVENTS TABLE (handles both seminars & hackathons)
+create table events (
+  id uuid default gen_random_uuid() primary key,
+  title text not null,
+  type text not null check (type in ('event','hackathon')),
+  date date,
+  day text,
+  time text,
+  venue text,
+  description text,
+  fee text,
+  contact text,
+  created_at timestamptz default now()
+);
+
+-- REGISTRATIONS TABLE
+create table registrations (
+  id uuid default gen_random_uuid() primary key,
+  name text not null,
+  roll_number text not null,
+  department text,
+  session text,
+  role_interest text,
+  description text,
+  created_at timestamptz default now()
+);
+
+-- SUGGESTIONS TABLE
+create table suggestions (
+  id uuid default gen_random_uuid() primary key,
+  name text not null,
+  roll_number text not null,
+  department text,
+  session text,
+  suggestion text not null,
+  created_at timestamptz default now()
+);
+
+-- PROJECT SUBMISSIONS TABLE
+create table project_submissions (
+  id uuid default gen_random_uuid() primary key,
+  name text not null,
+  roll_number text not null,
+  department text,
+  session text,
+  phone text,
+  description text not null,
+  created_at timestamptz default now()
+);
+
+-- ROW LEVEL SECURITY (RLS)
+-- Enable RLS on all tables
+alter table members enable row level security;
+alter table events enable row level security;
+alter table registrations enable row level security;
+alter table suggestions enable row level security;
+alter table project_submissions enable row level security;
+
+-- Public can read members and events
+create policy "Public read members" on members for select using (true);
+create policy "Public read events" on events for select using (true);
+
+-- Anyone can insert into forms
+create policy "Public insert registrations" on registrations for insert with check (true);
+create policy "Public insert suggestions" on suggestions for insert with check (true);
+create policy "Public insert projects" on project_submissions for insert with check (true);
+
+-- Authenticated users (admin) can do everything
+create policy "Admin all members" on members for all using (auth.role() = 'authenticated');
+create policy "Admin all events" on events for all using (auth.role() = 'authenticated');
+create policy "Admin read registrations" on registrations for select using (auth.role() = 'authenticated');
+create policy "Admin read suggestions" on suggestions for select using (auth.role() = 'authenticated');
+create policy "Admin read projects" on project_submissions for select using (auth.role() = 'authenticated');
+
+STEP 4: Create admin user
+  → Supabase → Authentication → Users → Add User
+  → Add email + password (this is your admin login)
+
+STEP 5: Deploy on Vercel
+  → Push index.html to GitHub repo
+  → Connect repo to Vercel → Deploy
+  → Done! It's live.
+
+=================================================================
+-->
+
+</body>
+</html>
